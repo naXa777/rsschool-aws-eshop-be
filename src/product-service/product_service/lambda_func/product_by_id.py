@@ -27,5 +27,5 @@ def handler(event, context):
                 "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
                 "content-type": "application/json"
             },
-            "body": json.dumps("'message': 'Product not found'")
+            "body": json.dumps({"message": "Product not found"})
         }
