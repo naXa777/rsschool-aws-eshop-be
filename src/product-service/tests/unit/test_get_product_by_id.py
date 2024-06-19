@@ -17,8 +17,8 @@ def test_handler_returns_product():
     response = product_by_id.handler(event, None)
     assert response['statusCode'] == 200
     body = json.loads(response['body'])
-    assert body['name'] == 'Product 1'
-    assert body['price'] == 100
+    assert body['title'] == 'Coffee Mug "DevOps"'
+    assert body['price'] == 15
 
 
 def test_handler_returns_404_for_non_existent_product():

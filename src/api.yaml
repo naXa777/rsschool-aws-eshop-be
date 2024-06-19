@@ -62,16 +62,20 @@ components:
     Product:
       required:
         - id
-        - name
+        - title
         - price
       type: object
       properties:
         id:
           type: string
           example: "1"
-        name:
+        title:
           type: string
-          example: "Product 1"
+          example: "Mug"
+        description:
+          type: string
+          description: additional information
+          example: "dishwasher safe"
         price:
           type: integer
           format: int32
