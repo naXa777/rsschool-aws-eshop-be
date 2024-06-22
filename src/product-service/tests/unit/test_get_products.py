@@ -13,8 +13,8 @@ def test_handler_returns_products():
     assert response['statusCode'] == 200
     body = json.loads(response['body'])
     assert body[0]['id'] == '1'
-    assert body[0]['name'] == 'Product 1'
-    assert body[0]['price'] == 100
+    assert body[0]['title'] == 'Coffee Mug "DevOps"'
+    assert body[0]['price'] == 15
     assert len(body) >= 3
 
 
