@@ -1,0 +1,89 @@
+openapi: 3.0.3
+info:
+  title: Products API - OpenAPI 3.0
+  description: |-
+    Some useful links:
+    - [My back-end repository](https://github.com/naXa777/rsschool-aws-eshop-be)
+    - [The source API definition for the Products API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-3__api-gateway%2Blambda/src/api.yaml)
+  version: "draft"
+servers:
+  - url: https://waexur8syl.execute-api.eu-central-1.amazonaws.com/prod
+tags:
+  - name: product
+    description: Everything about Products
+paths:
+  /products:
+    get:
+      tags:
+        - product
+      summary: Lists All Products
+      description: Returns unsorted list. No pagination.
+      operationId: GetProductsListHandler
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+
+  /products/{productId}:
+    get:
+      tags:
+        - product
+      summary: Find product by ID
+      description: Returns a single product
+      operationId: GetProductByIdHandler
+      parameters:
+        - name: productId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+components:
+  schemas:
+    Product:
+      required:
+        - id
+        - title
+        - price
+      type: object
+      properties:
+        id:
+          type: string
+          example: "1"
+        title:
+          type: string
+          example: "Mug"
+        description:
+          type: string
+          description: additional information
+          example: "dishwasher safe"
+        price:
+          type: integer
+          format: int32
+          description: product price in the store
+          example: 100
+    NotFound:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "FOO not found"
