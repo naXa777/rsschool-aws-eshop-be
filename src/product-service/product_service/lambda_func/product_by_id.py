@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+import traceback
 
 
 def handler(event, context):
@@ -12,19 +13,18 @@ def handler(event, context):
         products_table_name = os.getenv('PRODUCTS_TABLE_NAME')
         stocks_table = dynamodb.Table(stocks_table_name)
         products_table = dynamodb.Table(products_table_name)
-        stocks_response = stocks_table.scan()
-        stocks_item = stocks_response.get_item(Key={'product_id': product_id})
-        products_response = products_table.scan()
-        #        products_items = products_response.get('Items', [product_id])
-        products_item = products_response.get_item(Key={'id': product_id})
 
-        if products_item and stocks_item:
+        # Retrieve the specific items from DynamoDB
+        stocks_item = stocks_table.get_item(Key={'product_id': product_id})
+        products_item = products_table.get_item(Key={'id': product_id})
+
+        if 'Item' in products_item and 'Item' in stocks_item:
             product = {
-                'id': products_item['id'],
-                'title': products_item['title'],
-                'description': products_item.get('description'),
-                'price': products_item.get('price'),
-                'count': stocks_item.get('count')
+                'id': products_item['Item']['id'],
+                'title': products_item['Item']['title'],
+                'description': products_item['Item'].get('description'),
+                'price': str(products_item['Item'].get('price')),
+                'count': str(stocks_item['Item'].get('count'))
             }
             return {
                 "statusCode": 200,
@@ -47,6 +47,7 @@ def handler(event, context):
             }
 
     except Exception as e:
+        print(traceback.format_exc())
         return {
             'statusCode': 500,
             "headers": {

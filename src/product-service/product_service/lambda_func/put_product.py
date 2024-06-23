@@ -1,6 +1,7 @@
 import json
 import os
 import boto3
+import traceback
 
 
 def handler(event, context):
@@ -46,6 +47,7 @@ def handler(event, context):
         }
 
     except Exception as e:
+        print(traceback.format_exc())
         return {
             'statusCode': 500,
             "headers": {
