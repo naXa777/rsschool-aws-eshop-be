@@ -52,7 +52,7 @@ def handler(event, context):
             'statusCode': 500,
             "headers": {
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
                 "content-type": "application/json"
             },
             'body': json.dumps({'error': str(e)})

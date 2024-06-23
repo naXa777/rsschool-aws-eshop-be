@@ -29,7 +29,7 @@ def handler(event, context):
             else:
                 product_dict[product_id] = {
                     'id': product_id,
-                    'count': stock_item['count']
+                    'count': str(stock_item['count'])
                 }
 
         products = list(product_dict.values())
@@ -38,7 +38,7 @@ def handler(event, context):
             "statusCode": 200,
             "headers": {
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
                 "content-type": "application/json"
             },
             "body": json.dumps(products)
@@ -50,7 +50,7 @@ def handler(event, context):
             'statusCode': 500,
             "headers": {
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
                 "content-type": "application/json"
             },
             'body': json.dumps({'error': str(e)})

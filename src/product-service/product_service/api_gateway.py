@@ -24,3 +24,26 @@ class ApiGateway(Stack):
 
         product_by_id_resource = products_resource.add_resource('{productId}')
         product_by_id_resource.add_method('GET', _api.LambdaIntegration(get_product_by_id_fn))
+
+        products_resource.add_method(
+            'OPTIONS',
+            _api.MockIntegration(
+                integration_responses=[{
+                    'statusCode': '200',
+                    'responseParameters': {
+                        'method.response.header.Access-Control-Allow-Origin': "'*'",
+                        'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,POST,PUT,DELETE'"
+                    }
+                }],
+                passthrough_behavior=_api.PassthroughBehavior.NEVER,
+                request_templates={"application/json": "{\"statusCode\": 200}"}
+            ),
+            method_responses=[{
+                'statusCode': '200',
+                'responseParameters': {
+                    'method.response.header.Access-Control-Allow-Headers': True,
+                    'method.response.header.Access-Control-Allow-Origin': True,
+                    'method.response.header.Access-Control-Allow-Methods': True
+                }
+            }]
+        )
