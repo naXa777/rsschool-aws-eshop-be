@@ -28,11 +28,6 @@ def handler(event, context):
                 product_dict[product_id]['price'] = str(product_dict[product_id].get('price'))
                 product_dict[product_id]['title'] = str(product_dict[product_id].get('title'))
                 product_dict[product_id]['description'] = str(product_dict[product_id].get('description'))
-            else:
-                product_dict[product_id] = {
-                    'id': product_id,
-                    'count': str(stock_item['count'])
-                }
 
         products = list(product_dict.values())
 

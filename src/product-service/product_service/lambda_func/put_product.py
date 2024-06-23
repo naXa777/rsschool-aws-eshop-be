@@ -11,25 +11,35 @@ def handler(event, context):
     try:
         product_data = json.loads(event['body'])
 
-        dynamodb = boto3.resource('dynamodb', region_name=os.getenv('AWS_REGION'))
+        dynamodb = boto3.client('dynamodb', region_name=os.getenv('AWS_REGION'))
         stocks_table_name = os.getenv('STOCKS_TABLE_NAME')
         products_table_name = os.getenv('PRODUCTS_TABLE_NAME')
-        stocks_table = dynamodb.Table(stocks_table_name)
-        products_table = dynamodb.Table(products_table_name)
 
-        product_entity = {
-            'id': str(uuid.uuid4()),
-            'title': product_data['title'],
-            'description': product_data.get('description'),
-            'price': product_data['price'],
+        product_id = str(uuid.uuid4())
+        product_item = {
+            'Put': {
+                'TableName': products_table_name,
+                'Item': {
+                    'id': {'S': product_id},
+                    'title': {'S': product_data['title']},
+                    'description': {'S': product_data.get('description')},
+                    'price': {'N': str(product_data['price'])},
+                }
+            }
+        }
+        stock_item = {
+            'Put': {
+                'TableName': stocks_table_name,
+                'Item': {
+                    'product_id': {'S': product_id},
+                    'count': {'N': str(product_data['count'])}
+                }
+            }
         }
 
-        products_table.put_item(Item=product_entity)
-        stocks_table.put_item(
-            Item={
-                'product_id': product_entity['id'],
-                'count': product_data['count']
-            }
+        # Perform a transaction write
+        dynamodb.transact_write_items(
+            TransactItems=[product_item, stock_item]
         )
 
         return {
@@ -41,7 +51,7 @@ def handler(event, context):
             },
             'body': json.dumps({
                 'message': 'Product created successfully',
-                'productId': product_entity['id']
+                'productId': product_id
             })
         }
 
