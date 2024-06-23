@@ -2,6 +2,7 @@ import json
 import os
 import boto3
 import traceback
+import uuid
 
 
 def handler(event, context):
@@ -14,11 +15,18 @@ def handler(event, context):
         stocks_table = dynamodb.Table(stocks_table_name)
         products_table = dynamodb.Table(products_table_name)
 
-        products_table.put_item(Item=product_data)
+        product_entity = {
+            'id': str(uuid.uuid4()),
+            'title': product_data['title'],
+            'description': product_data.get('description'),
+            'price': product_data['price'],
+        }
+
+        products_table.put_item(Item=product_entity)
         stocks_table.put_item(
             Item={
-                'product_id': product_data['id'],
-                'count': 0
+                'product_id': product_entity['id'],
+                'count': product_data['count']
             }
         )
 
@@ -31,7 +39,7 @@ def handler(event, context):
             },
             'body': json.dumps({
                 'message': 'Product created successfully',
-                'productId': product_data['id']
+                'productId': product_entity['id']
             })
         }
 
