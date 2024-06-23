@@ -16,7 +16,7 @@ def populate_tables(items):
         title = item['title']
         description = item.get('description')
         price = item.get('price')
-        count = random.randint(1, 10)
+        count = random.randint(0, 10)
 
         products_table.put_item(
             Item={
