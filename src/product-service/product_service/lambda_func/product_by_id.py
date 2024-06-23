@@ -5,6 +5,8 @@ import traceback
 
 
 def handler(event, context):
+    print("GET /product/:id request. Path parameters: %s", event.get('pathParameters'))
+
     try:
         product_id = event["pathParameters"]["productId"]
 
@@ -14,7 +16,7 @@ def handler(event, context):
         stocks_table = dynamodb.Table(stocks_table_name)
         products_table = dynamodb.Table(products_table_name)
 
-        # Retrieve the specific items from DynamoDB
+        # select by ID from DynamoDB
         stocks_item = stocks_table.get_item(Key={'product_id': product_id})
         products_item = products_table.get_item(Key={'id': product_id})
 

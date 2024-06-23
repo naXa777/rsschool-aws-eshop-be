@@ -5,6 +5,8 @@ import traceback
 
 
 def handler(event, context):
+    print("GET /product request")
+
     try:
         dynamodb = boto3.resource('dynamodb', region_name=os.getenv('AWS_REGION'))
         stocks_table_name = os.getenv('STOCKS_TABLE_NAME')

@@ -6,6 +6,8 @@ import uuid
 
 
 def handler(event, context):
+    print("POST /product request. Body: %s", event.get('body'))
+
     try:
         product_data = json.loads(event['body'])
 
