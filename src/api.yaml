@@ -28,6 +28,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - product
+      summary: Create a new product
+      description: Define a new product with quantity = 0
+      operationId: CreateProductHandler
+      requestBody:
+        description: Create a new product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid input
 
   /products/{productId}:
     get:
