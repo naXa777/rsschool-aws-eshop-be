@@ -25,8 +25,8 @@ def handler(event, context):
                 'id': products_item['Item']['id'],
                 'title': products_item['Item']['title'],
                 'description': products_item['Item'].get('description'),
-                'price': str(products_item['Item'].get('price')),
-                'count': str(stocks_item['Item'].get('count'))
+                'price': float(products_item['Item'].get('price')),
+                'count': int(stocks_item['Item'].get('count'))
             }
             return {
                 "statusCode": 200,
