@@ -11,6 +11,19 @@ def handler(event, context):
     try:
         product_data = json.loads(event['body'])
 
+        if not isinstance(product_data['title'], str):
+            raise ValueError("Expected type for 'title': string.")
+        if not isinstance(product_data['price'], int):
+            raise ValueError("Expected type for 'price': integer.")
+        if product_data['price'] < 0:
+            raise ValueError("'price' cannot be negative.")
+        if not isinstance(product_data.get('description', ''), str):
+            raise ValueError("Expected type for 'description': string.")
+        if not isinstance(product_data['count'], int):
+            raise ValueError("Expected type for 'count': integer.")
+        if product_data['count'] < 0:
+            raise ValueError("'count' cannot be negative.")
+
         dynamodb = boto3.client('dynamodb', region_name=os.getenv('AWS_REGION'))
         stocks_table_name = os.getenv('STOCKS_TABLE_NAME')
         products_table_name = os.getenv('PRODUCTS_TABLE_NAME')
@@ -22,7 +35,7 @@ def handler(event, context):
                 'Item': {
                     'id': {'S': product_id},
                     'title': {'S': product_data['title']},
-                    'description': {'S': product_data.get('description')},
+                    'description': {'S': product_data.get('description', '')},
                     'price': {'N': str(product_data['price'])},
                 }
             }
@@ -64,6 +77,17 @@ def handler(event, context):
                 "content-type": "application/json"
             },
             'body': json.dumps({'error': f'Missing key in input: {str(e)}'})
+        }
+
+    except ValueError as e:
+        return {
+            'statusCode': 400,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                "content-type": "application/json"
+            },
+            'body': json.dumps({'error': str(e)})
         }
 
     except Exception as e:
