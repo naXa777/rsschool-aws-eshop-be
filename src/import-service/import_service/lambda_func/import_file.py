@@ -22,7 +22,8 @@ def handler(event, context):
         "statusCode": 200,
         "headers": {
             "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS"
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+            "content-type": "text/plain"
         },
         "body": signed_url
     }

@@ -1,0 +1,37 @@
+openapi: 3.0.3
+info:
+  title: Import API - OpenAPI 3.0
+  description: |-
+    Some useful links:
+    - [My back-end repository](https://github.com/naXa777/rsschool-aws-eshop-be)
+    - [The source API definition for the Import API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-5__s3/src/import-service/api.yaml)
+  version: "draft 0.5"
+servers:
+  - url: https://oru6e8x93k.execute-api.eu-central-1.amazonaws.com/prod
+tags:
+  - name: import
+    description: Everything about Product Import
+paths:
+  /import:
+    get:
+      tags:
+        - import
+      summary: Import Products CSV
+      description: Returns S3 URL for upload with One-Time access token.
+      operationId: ImportProductsHandler
+      parameters:
+        - name: name
+          in: query
+          description: filename
+          example: "products.csv"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "https://bucket-name.s3.amazonaws.com/upload/file-name.csv?X-Secret"

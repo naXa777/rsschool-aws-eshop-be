@@ -4,7 +4,7 @@ info:
   description: |-
     Some useful links:
     - [My back-end repository](https://github.com/naXa777/rsschool-aws-eshop-be)
-    - [The source API definition for the Products API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-3__api-gateway%2Blambda/src/api.yaml)
+    - [The source API definition for the Products API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-5__s3/src/product-service/api.yaml)
   version: "draft 0.4"
 servers:
   - url: https://waexur8syl.execute-api.eu-central-1.amazonaws.com/prod
