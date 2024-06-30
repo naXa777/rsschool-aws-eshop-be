@@ -14,6 +14,7 @@ def handler(event, context):
 
     for record in event['Records']:
         key = record['s3']['object']['key']
+        print(f'parsing file {key}')
 
         response = s3.get_object(Bucket=bucket_name, Key=key)
         body = response['Body']
@@ -30,4 +31,5 @@ def handler(event, context):
         s3.copy_object(CopySource=copy_source, Bucket=bucket_name, Key=parsed_key)
 
         if key != 'uploaded/':
+            print(f'deleting {key}')
             s3.delete_object(Bucket=bucket_name, Key=key)
