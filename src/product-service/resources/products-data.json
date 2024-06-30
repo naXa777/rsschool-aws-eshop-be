@@ -1,0 +1,41 @@
+[
+  {
+    "title": "Coffee Mug 'DevOps'",
+    "description": "Tell me, this DevOps is just a buzzword, isn't it?",
+    "price": 15
+  },
+  {
+    "title": "Men's T-shirt 'Sarcasm DevOps Software Development'",
+    "price": 79
+  },
+  {
+    "title": "White Mug with Print",
+    "description": "✅ Are you looking for the perfect gift?\n✔️ Here's the perfect idea - our mug!",
+    "price": 12
+  },
+  {
+    "title": "DevOps Magic Mousepad",
+    "description": "Boost your productivity with our DevOps Magic Mousepad - because even your mouse needs a pipeline!",
+    "price": 18
+  },
+  {
+    "title": "Hoodie 'Infinite Loop'",
+    "description": "Stay warm and looped in with our exclusive Infinite Loop hoodie, perfect for late-night coding sessions!",
+    "price": 65
+  },
+  {
+    "title": "Sticker Pack 'DevOps Icons'",
+    "description": "Decorate your laptop with our DevOps Icons sticker pack, featuring popular tools like Docker, Kubernetes, and Jenkins!",
+    "price": 9
+  },
+  {
+    "title": "Poster 'DevOps Flowchart'",
+    "description": "Visualize your workflows with our detailed DevOps Flowchart poster - a must-have for every DevOps enthusiast!",
+    "price": 20
+  },
+  {
+    "title": "Notebook 'Code & Coffee'",
+    "description": "Our Code & Coffee notebook is ideal for jotting down ideas or scripting on the go. Keep your coffee close and your notes closer!",
+    "price": 12
+  }
+]

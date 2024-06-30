@@ -5,7 +5,7 @@ info:
     Some useful links:
     - [My back-end repository](https://github.com/naXa777/rsschool-aws-eshop-be)
     - [The source API definition for the Products API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-3__api-gateway%2Blambda/src/api.yaml)
-  version: "draft"
+  version: "draft 0.4"
 servers:
   - url: https://waexur8syl.execute-api.eu-central-1.amazonaws.com/prod
 tags:
@@ -28,6 +28,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - product
+      summary: Create a new product
+      description: Define a new product with quantity = 0
+      operationId: CreateProductHandler
+      requestBody:
+        description: Create a new product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProduct'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductId'
+        '400':
+          description: Invalid input
 
   /products/{productId}:
     get:
@@ -40,6 +62,7 @@ paths:
         - name: productId
           in: path
           description: ID of product to return
+          example: "01904574-262d-7a23-bce9-db3ef93dafb5"
           required: true
           schema:
             type: string
@@ -64,11 +87,12 @@ components:
         - id
         - title
         - price
+        - count
       type: object
       properties:
         id:
           type: string
-          example: "1"
+          example: "0190466f-0076-7d2b-8c79-27eb2f80e5b0"
         title:
           type: string
           example: "Mug"
@@ -81,6 +105,47 @@ components:
           format: int32
           description: product price in the store
           example: 100
+        count:
+          type: integer
+          format: int32
+          description: product quantity
+          example: 1
+    NewProduct:
+      required:
+        - title
+        - price
+        - count
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Mug"
+        description:
+          type: string
+          description: additional information
+          example: "dishwasher safe"
+        price:
+          type: integer
+          format: int32
+          description: product price in the store. must be greater or equal to 0.
+          example: 100
+        count:
+          type: integer
+          format: int32
+          description: product quantity. must be greater or equal to 0.
+          example: 1
+    ProductId:
+      required:
+        - productId
+        - message
+      type: object
+      properties:
+        productId:
+          type: string
+          example: "0190466f-0076-7d2b-8c79-27eb2f80e5b0"
+        message:
+          type: string
+          example: "Product created successfully"
     NotFound:
       type: object
       properties:
