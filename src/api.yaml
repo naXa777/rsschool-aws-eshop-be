@@ -5,7 +5,7 @@ info:
     Some useful links:
     - [My back-end repository](https://github.com/naXa777/rsschool-aws-eshop-be)
     - [The source API definition for the Products API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-3__api-gateway%2Blambda/src/api.yaml)
-  version: "draft"
+  version: "draft 0.4"
 servers:
   - url: https://waexur8syl.execute-api.eu-central-1.amazonaws.com/prod
 tags:
@@ -39,7 +39,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              $ref: '#/components/schemas/NewProduct'
         required: true
       responses:
         '200':
@@ -47,7 +47,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/ProductId'
         '400':
           description: Invalid input
 
@@ -110,6 +110,42 @@ components:
           format: int32
           description: product quantity
           example: 1
+    NewProduct:
+      required:
+        - title
+        - price
+        - count
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Mug"
+        description:
+          type: string
+          description: additional information
+          example: "dishwasher safe"
+        price:
+          type: integer
+          format: int32
+          description: product price in the store. must be greater or equal to 0.
+          example: 100
+        count:
+          type: integer
+          format: int32
+          description: product quantity. must be greater or equal to 0.
+          example: 1
+    ProductId:
+      required:
+        - productId
+        - message
+      type: object
+      properties:
+        productId:
+          type: string
+          example: "0190466f-0076-7d2b-8c79-27eb2f80e5b0"
+        message:
+          type: string
+          example: "Product created successfully"
     NotFound:
       type: object
       properties:
