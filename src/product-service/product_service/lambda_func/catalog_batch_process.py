@@ -5,7 +5,7 @@ import uuid
 import traceback
 
 dynamodb = boto3.resource('dynamodb')
-sns_client = boto3.resource('sns')
+sns_client = boto3.client('sns')
 
 def handler(event, context):
     print("process products in batch")
@@ -18,16 +18,15 @@ def handler(event, context):
         products_table_name = os.getenv('PRODUCTS_TABLE_NAME')
 
         required_fields = ['title', 'price', 'count']
-
         for field in required_fields:
             if field not in product_data:
+                print(f'Validation error: {field} is required')
                 return {
                     'statusCode': 400,
                     'body': json.dumps({'error': f'{field} is required'})
                 }
 
         product_id = str(uuid.uuid4())
-
         product_item = {
             'Put': {
                 'TableName': products_table_name,
@@ -53,6 +52,7 @@ def handler(event, context):
         dynamodb.transact_write_items(
             TransactItems=[product_item, stock_item]
         )
+        print(f"New product {product_id} inserted in DynamoDB")
 
         sns_product = {
             'id': product_id,
