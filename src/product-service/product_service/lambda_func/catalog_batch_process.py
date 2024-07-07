@@ -8,7 +8,7 @@ dynamodb = boto3.resource('dynamodb')
 sns_client = boto3.resource('sns')
 
 def handler(event, context):
-    // print("POST /product request. Body: %s", event.get('body'))
+    print("process products in batch")
     products_for_sns = []
     sns_topic_arn = os.environ['SNS_TOPIC_ARN']
     for record in event['Records']
