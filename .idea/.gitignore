@@ -6,3 +6,9 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+# User-specific stuff:
+tasks.xml
+dictionaries
+vcs.xml
+jsLibraryMappings.xml
