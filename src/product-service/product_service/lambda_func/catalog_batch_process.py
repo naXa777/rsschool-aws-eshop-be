@@ -11,7 +11,7 @@ def handler(event, context):
     print("process products in batch")
     products_for_sns = []
     sns_topic_arn = os.environ['SNS_TOPIC_ARN']
-    for record in event['Records']
+    for record in event['Records']:
         product_data = json.loads(record['body'])
         dynamodb = boto3.client('dynamodb', 'eu-central-1')
         stocks_table_name = os.getenv('STOCKS_TABLE_NAME')
