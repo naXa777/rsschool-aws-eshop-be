@@ -14,15 +14,19 @@ def aws_credentials(monkeypatch):
     monkeypatch.setenv("BUCKET_NAME", 'test-bucket')
 
 @pytest.fixture
-def s3_setup():
+def aws_setup():
     with mock_aws():
+        # Mock S3
         s3 = boto3.client('s3', region_name='us-east-1')
         s3.create_bucket(Bucket='test-bucket')
-        s3.put_object(Bucket='test-bucket', Key='uploaded/test.csv', Body="product,price\nAmber,30\nBurn,25")
-        yield s3
+
+        # Mock SQS
+        sqs = boto3.client('sqs', region_name='us-east-1')
+        sqs.create_queue(QueueName='catalogItemsQueue')
+        yield s3, sqs
 
 @mock_aws
-def test_parse_file_handler(s3_setup):
+def test_parse_file_handler(aws_setup):
     # Arrange
     # a mock event that mimics the AWS S3 put event
     event = {
