@@ -9,7 +9,7 @@ sns_client = boto3.client('sns')
 
 def handler(event, context):
     print("process products in batch")
-    products_for_sns = []
+
     sns_topic_arn = os.environ['SNS_TOPIC_ARN']
     for record in event['Records']:
         product_data = json.loads(record['body'])
@@ -61,21 +61,19 @@ def handler(event, context):
             'price': product_data['price'],
             'count': product_data['count'],
         }
-        products_for_sns.append(sns_product)
 
-    sns_message = {
-        'default': json.dumps({
-            'message': 'Products created successfully',
-            'products': products_for_sns
-        })
-    }
-    response = sns_client.publish(
-        TopicArn=sns_topic_arn,
-        Message=json.dumps(sns_message),
-        MessageStructure='json'
-    )
-
-    print(f"Message sent to SNS topic: {response['MessageId']}")
+        response = sns_client.publish(
+            TopicArn=sns_topic_arn,
+            Message=json.dumps(sns_product),
+            MessageStructure='json',
+            MessageAttributes={
+                'count': {
+                    'DataType': 'Number',
+                    'StringValue': str(product_data['count'])
+                }
+            }
+        )
+        print(f"Message sent to SNS topic: {response['MessageId']}")
 
     return {
         'statusCode': 200,

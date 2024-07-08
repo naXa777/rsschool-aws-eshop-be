@@ -18,7 +18,18 @@ class CatalogBatchProcess(Stack):
             self, 'CreateProductTopic', topic_name='createProductTopic'
         )
 
-        create_product_topic.add_subscription(subscriptions.EmailSubscription('test@test.com'))
+        create_product_topic.add_subscription(subscriptions.EmailSubscription(
+            'test@test.com',
+            filter_policy={
+                "count": sns.SubscriptionFilter.numeric_filter(greater_than=10)
+            }
+        ))
+        create_product_topic.add_subscription(subscriptions.EmailSubscription(
+            'alt.test@test.com',
+            filter_policy={
+                "count": sns.SubscriptionFilter.numeric_filter(less_than_or_equal_to=10)
+            }
+        ))
         catalog_items_queue = sqs.Queue(self, 'CatalogItemsQueue', queue_name='catalogItemsQueue')
         event_source = lambda_event_sources.SqsEventSource(catalog_items_queue, batch_size=5)
 
