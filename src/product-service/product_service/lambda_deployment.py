@@ -4,6 +4,7 @@ from product_service.api_gateway import ApiGateway
 from product_service.get_product_by_id import ProductById
 from product_service.get_products import GetProducts
 from product_service.put_products import PutProducts
+from product_service.catalog_batch_process import CatalogBatchProcess
 from constructs import Construct
 
 
@@ -31,10 +32,14 @@ class MyCdkProductServiceAppStack(Stack):
                    get_product_by_id_fn=get_product_by_id_lambda.get_product_by_id,
                    put_products_fn=put_products_lambda.put_products)
 
+        catalog_batch_process_lambda = CatalogBatchProcess(self, 'CatalogBatchProcess', environment)
+
         products_table.grant_read_data(get_products_list_lambda.get_products_list)
         products_table.grant_read_data(get_product_by_id_lambda.get_product_by_id)
         products_table.grant_read_write_data(put_products_lambda.put_products)
+        products_table.grant_read_write_data(catalog_batch_process_lambda.catalog_batch_process)
 
         stocks_table.grant_read_data(get_products_list_lambda.get_products_list)
         stocks_table.grant_read_data(get_product_by_id_lambda.get_product_by_id)
         stocks_table.grant_read_write_data(put_products_lambda.put_products)
+        stocks_table.grant_read_write_data(catalog_batch_process_lambda.catalog_batch_process)
