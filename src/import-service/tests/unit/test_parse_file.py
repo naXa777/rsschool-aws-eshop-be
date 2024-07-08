@@ -29,24 +29,27 @@ def aws_setup():
             }
         )
 
-        csv_file_path = '../resources/products-test.csv'
-        if os.path.exists(csv_file_path):
-            with open(csv_file_path, 'rb') as csv_file:
-                s3.put_object(
-                    Bucket=bucket_name,
-                    Key='uploaded/test.csv',
-                    Body=csv_file
-                )
-        else:
-            print("products-test.csv file does not exist.")
+        csv_file = 'title,description,price,count\nNew Test,Easy to find!,99,1'
+        print(f"file content {csv_file}")
+        s3.put_object(
+            Bucket='test-bucket',
+            Key='uploaded/test.csv',
+            Body=csv_file
+        )
 
         # Mock SQS
         sqs = boto3.client('sqs', region_name='eu-central-1')
-        sqs.create_queue(QueueName='catalogItemsQueue')
+        queue_url = sqs.create_queue(QueueName='catalogItemsQueue')['QueueUrl']
+        queue_arn = sqs.get_queue_attributes(
+            QueueUrl=queue_url, AttributeNames=['QueueArn']
+        )['Attributes']['QueueArn']
+
+        os.environ['SQS_QUEUE_URL'] = queue_url
+        os.environ['SQS_QUEUE_ARN'] = queue_arn
+
         yield s3, sqs
 
 
-@pytest.mark.skip(reason="Skipping this test as I'm not ready to mock S3 bucket")
 @mock_aws
 def test_parse_file_handler(aws_setup):
     # Arrange
@@ -74,7 +77,8 @@ def test_parse_file_handler(aws_setup):
     parsed_content = parsed_obj.get()['Body'].read().decode('utf-8')
 
     # Check if file was copied
-    assert parsed_content == "product,price\nAmber,30\nBurn,25", "Content mismatch after parsing"
+    expected_content = 'title,description,price,count\nNew Test,Easy to find!,99,1'
+    assert parsed_content == expected_content, "Content mismatch after parsing"
 
     # Check if original file is deleted
     try:
