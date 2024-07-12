@@ -13,7 +13,7 @@ def handler(event, context):
             "headers": {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, OPTIONS",
-                "content-type": "application/json"
+                "content-type": "text/plain"
             },
             'body': 'Unauthorized'
         }
@@ -35,7 +35,7 @@ def handler(event, context):
             "headers": {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "GET, OPTIONS",
-                "content-type": "application/json"
+                "content-type": "text/plain"
             },
             'body': 'Forbidden'
         }
