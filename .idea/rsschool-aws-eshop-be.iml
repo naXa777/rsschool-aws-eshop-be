@@ -2,7 +2,17 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/src/import-service/cdk.out" />
+      <excludeFolder url="file://$MODULE_DIR$/src/import-service/.pytest_cache" />
+      <excludeFolder url="file://$MODULE_DIR$/src/import-service/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/src/authorization-service/cdk.out" />
+      <excludeFolder url="file://$MODULE_DIR$/src/authorization-service/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.pytest_cache" />
+      <excludeFolder url="file://$MODULE_DIR$/src/product-service/.pytest_cache" />
+      <excludeFolder url="file://$MODULE_DIR$/src/product-service/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/src/product-service/cdk.out" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
