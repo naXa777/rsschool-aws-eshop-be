@@ -39,7 +39,7 @@ class ApiGateway(Stack):
             },
             status_code="401",
             templates={
-                "application/json": '{"message": "Unauthorized"}'
+                "text/plain": "Unauthorized"
             },
         )
         api.add_gateway_response(
@@ -52,7 +52,7 @@ class ApiGateway(Stack):
             },
             status_code="403",
             templates={
-                "application/json": '{"message": "Access Forbidden"}'
+                "text/plain": "Access Forbidden"
             },
         )
 
