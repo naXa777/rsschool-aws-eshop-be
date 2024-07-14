@@ -7,38 +7,24 @@ def handler(event, context):
 
     auth_header = event["authorizationToken"]
 
-    if not auth_header:
-        return {
-            'statusCode': 401,
-            "headers": {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, OPTIONS",
-                "content-type": "text/plain"
-            },
-            'body': 'Unauthorized'
-        }
+    try:
+        scheme, encoded_creds = auth_header.split(' ')
+        decoded_creds = base64.b64decode(encoded_creds).decode('utf-8')
+        username, password = decoded_creds.split(':')
+        stored_password = os.getenv(username)
 
-    scheme, encoded_creds = auth_header.split(' ')
-    decoded_creds = base64.b64decode(encoded_creds).decode('utf-8')
-    username, password = decoded_creds.split(':')
-    stored_password = os.getenv(username)
+        print(f'scheme {scheme} username {username}')
 
-    print(f'scheme {scheme} username {username}')
-
-    if scheme == 'Basic' and stored_password and stored_password == password:
-        policy = generatePolicy(username, 'Allow', event['methodArn'])
-        print(f'policy {policy}')
-        return policy
-    else:
-        return {
-            'statusCode': 403,
-            "headers": {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET, OPTIONS",
-                "content-type": "text/plain"
-            },
-            'body': 'Forbidden'
-        }
+        if scheme == 'Basic' and stored_password and stored_password == password:
+            policy = generatePolicy(username, 'Allow', event['methodArn'])
+            print(f'policy {policy}')
+            return policy
+        else:
+            policy = generatePolicy(username, 'Deny', event['methodArn'])
+            print(f'policy {policy}')
+            return policy
+    except Exception:
+        return generatePolicy('unknown', 'Deny', event['methodArn'])
 
 def generatePolicy(principalId, effect, resource):
     authResponse = {
