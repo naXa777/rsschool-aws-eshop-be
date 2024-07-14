@@ -4,8 +4,8 @@ info:
   description: |-
     Some useful links:
     - [My back-end repository](https://github.com/naXa777/rsschool-aws-eshop-be)
-    - [The source API definition for the Import API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-5__s3/src/import-service/api.yaml)
-  version: "draft 0.5"
+    - [The source API definition for the Import API](https://github.com/naXa777/rsschool-aws-eshop-be/tree/task-7_auth/src/import-service/api.yaml)
+  version: "draft 0.7"
 servers:
   - url: https://oru6e8x93k.execute-api.eu-central-1.amazonaws.com/prod
 tags:
@@ -35,3 +35,26 @@ paths:
               schema:
                 type: string
                 example: "https://bucket-name.s3.amazonaws.com/upload/file-name.csv?X-Secret"
+        '401':
+          description: unauthorized
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Unauthorized
+        '403':
+          description: access forbidden
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Access Forbidden
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+
+security:
+  - BasicAuth: []
