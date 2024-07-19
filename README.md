@@ -1,7 +1,9 @@
 # rsschool-aws-eshop-be
 
-go to main directory
+go to service directory
 ```sh
+cd src/authorization-service
+cd src/import-service
 cd src/product-service
 ```
 
